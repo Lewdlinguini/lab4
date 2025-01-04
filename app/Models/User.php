@@ -62,4 +62,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    // app/Models/User.php
+    public function orders()
+    {
+    return $this->hasMany(Order::class);
+    }
+
 }

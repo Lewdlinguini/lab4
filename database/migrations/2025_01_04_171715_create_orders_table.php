@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   
+    /**
+     * Run the migrations.
+     */
     public function up()
     {
     Schema::create('orders', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->id();  // This creates an auto-incrementing unsigned big integer primary key
+        $table->foreignId('user_id')->constrained('users');
         $table->decimal('total_amount', 8, 2);
-        $table->enum('payment_status', ['pending', 'paid', 'failed']);
-        $table->enum('shipping_status', ['pending', 'shipped', 'delivered'])->default('pending');
+        $table->string('payment_status')->default('Pending');
+        $table->string('shipping_status')->default('Pending');
         $table->timestamps();
     });
-}
+    }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('orders');

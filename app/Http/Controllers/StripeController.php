@@ -3,6 +3,8 @@
 // app/Http/Controllers/StripeController.php
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
@@ -47,29 +49,53 @@ class StripeController extends Controller
     }
 
     public function success()
-    {
-        $cart = session()->get('cart', []);
-    
-        if (!empty($cart)) {
-            DB::transaction(function () use ($cart) {
-                foreach ($cart as $itemId => $item) {
-                    $product = Product::find($itemId);
-                    if ($product) {
-                        $product->stock -= $item['quantity'];
-                        $product->save();
-                    }
+{
+    $cart = session()->get('cart', []);
+    $user = auth()->user();
+    $totalAmount = 0;
+
+    if (!empty($cart)) {
+        DB::transaction(function () use ($cart, $user, &$totalAmount) {
+            // Create order
+            $order = Order::create([
+                'user_id' => $user->id,
+                'total_amount' => $totalAmount,
+                'payment_status' => 'Completed',
+                'shipping_status' => 'Pending',
+            ]);
+
+            // Add items to the order
+            foreach ($cart as $item) {
+                $totalAmount += $item['price'] * $item['quantity'];
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'product_name' => $item['product_name'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+            }
+
+            // Update stock for products
+            foreach ($cart as $itemId => $item) {
+                $product = Product::find($itemId);
+                if ($product) {
+                    $product->stock -= $item['quantity'];
+                    $product->save();
                 }
-    
-                session()->forget('cart');
-            });
-        }
-    
-        return view('checkout.success')->with('success', 'Your order was successful, and stock levels have been updated.');
-    }
-    
-    public function cancel()
-    {
-        return view('checkout.cancel');
+            }
+
+            // Update order total amount
+            $order->update(['total_amount' => $totalAmount]);
+
+            // Clear cart
+            session()->forget('cart');
+        });
     }
 
+    return view('checkout.success')->with('success', 'Your order was successful, and stock levels have been updated.');
 }
+
+} 
+

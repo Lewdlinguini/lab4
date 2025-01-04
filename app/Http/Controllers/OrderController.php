@@ -3,46 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    // Handle payment success and update order status
-    public function paymentSuccess($order_id)
+    // Admin: View all orders
+    public function index()
     {
-        // Find the order by ID
-        $order = Order::findOrFail($order_id);
-        
-        // Update payment status to 'paid'
-        $order->payment_status = 'paid';
-        $order->save();
-
-        // Redirect to product index with success message
-        return redirect()->route('products.index')->with('success', 'Payment successful!');
+        $orders = Order::with('user', 'orderItems')->get();
+        return view('admin.orders.index', compact('orders'));
     }
 
-    // Handle payment cancellation
-    public function paymentCancel()
+    // Admin: Update order status
+    public function updateStatus(Request $request, Order $order)
     {
-        // Redirect to product index with error message
-        return redirect()->route('products.index')->with('error', 'Payment canceled.');
-    }
-
-    // Create a new order (this method could be triggered before the payment process)
-    public function createOrder(Request $request)
-    {
-        // Assuming you have a shopping cart or some method to calculate the total
-        $totalAmount = $request->input('total_amount');  // You should calculate the total amount based on the cart
-
-        // Create a new order with 'pending' payment and shipping status
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'total_amount' => $totalAmount,  // Calculate total amount based on cart or input
-            'payment_status' => 'pending',
-            'shipping_status' => 'pending',
+        $request->validate([
+            'shipping_status' => 'required|string|in:Pending,Shipped,Delivered',
+            'payment_status' => 'required|string|in:Pending,Completed',
         ]);
 
-        // Return order confirmation or further actions (e.g., redirect to payment page)
-        return redirect()->route('payment.page', ['order_id' => $order->id]);
+        $order->update([
+            'shipping_status' => $request->shipping_status,
+            'payment_status' => $request->payment_status,
+        ]);
+
+        return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
     }
+
+    // Show specific order details
+    public function show($id)
+    {
+        $order = Order::with('orderItems.product')->findOrFail($id);
+        return view('admin.orders.show', compact('order'));
+    }
+
+    // Create a new order (with order items)
+  
+   // Create a new order (with order items)
+public function store(Request $request)
+{
+    // Validate the order data (add validation rules as necessary)
+    $request->validate([
+        'shipping_address' => 'required|string',
+        'products' => 'required|array', // Assumes products are passed as an array
+    ]);
+
+    // Create the order
+    $order = new Order();
+    $order->user_id = auth()->user()->id; // Assuming user is authenticated
+    $order->shipping_address = $request->shipping_address;
+    $order->save();
+
+    // Loop through the products passed in the request and add them to the order
+    foreach ($request->products as $productData) {
+        $product = Product::find($productData['product_id']); // Find the product by ID
+        
+        if ($product) {
+            // Create the order item
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $order->id;
+            $orderItem->product_id = $product->id;
+            $orderItem->quantity = $productData['quantity'];
+            $orderItem->price = $product->price; // You can adjust this to use a custom price if needed
+            $orderItem->product_name = $product->product_name; // Set product name explicitly
+            $orderItem->save();
+        }
+    }
+
+    return redirect()->route('admin.orders.index')->with('success', 'Order placed successfully!');
+}
+
 }

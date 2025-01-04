@@ -229,23 +229,23 @@
                     </div>
                     <div class="card-footer text-center">
                         <div class="btn-group" role="group" aria-label="Product Actions">
-                            @if($product->stock > 0)
-                            <a href="{{ route('product.buy', $product->id) }}" class="btn btn-success">Buy</a>
-                            @else
-                                <button type="button" class="btn btn-sm btn-secondary" onclick="showOutOfStockModal()">
-                                    <i class="bi bi-cart"></i> Out of Stock
-                                </button>
-                            @endif
+                        @if($product->stock > 0)
+                        <a href="{{ route('product.buy', $product->id) }}" class="btn btn-success btn-sm">Buy</a>
+                        @else
+                       <button type="button" class="btn btn-secondary btn-sm" onclick="showOutOfStockModal()">
+                       <i class="bi bi-cart"></i> Out of Stock
+                       </button>
+                       @endif
 
-                            @if(auth()->user()->role->name === 'Admin')
-                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning mx-2">
-                                    <i class="bi bi-brush"></i> Edit
-                                </a>
+                      @if(auth()->user()->role->name === 'Admin')
+                     <a href="{{ route('products.edit', $product) }}" class="btn btn-warning btn-sm mx-2">
+                     <i class="bi bi-brush"></i> Edit
+                     </a>
 
-                                <button type="button" class="btn btn-sm btn-danger mx-2" onclick="showDeleteModal('{{ route('products.destroy', $product) }}')">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            @endif
+                    <button type="button" class="btn btn-danger btn-sm mx-2" onclick="showDeleteModal('{{ route('products.destroy', $product) }}')">
+                    <i class="bi bi-trash"></i> Delete
+                    </button>
+                    @endif
                         </div>
                     </div>
                 </div>

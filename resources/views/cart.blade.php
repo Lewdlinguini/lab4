@@ -8,6 +8,10 @@
             <div class="cart-items d-grid grid-template-columns gap-4">
                 @foreach(session('cart') as $id => $details)
                     @if(isset($details['product_name']) && isset($details['image']) && isset($details['price']) && isset($details['quantity']))
+                        <!-- Assuming you have a Product model to fetch stock -->
+                        @php
+                            $product = \App\Models\Product::find($details['product_id']); 
+                        @endphp
                         <div class="cart-item card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #e2e2e2; padding: 8px; width: 100%;">
                             <div class="cart-item-info d-flex align-items-center mb-2">
                                 <img src="{{ asset('images/' . $details['image']) }}" alt="{{ $details['product_name'] }}" class="cart-item-image rounded" style="width: 60px; height: 60px; object-fit: cover;">
@@ -26,10 +30,14 @@
 
                                 <span class="quantity" style="font-weight: bold; font-size: 16px; line-height: 1;">{{ $details['quantity'] }}</span>
 
+                                <!-- Disable Increase button if no stock left or if quantity exceeds available stock -->
                                 <form action="{{ route('cart.update', $id) }}" method="POST" class="quantity-form">
                                     @csrf
                                     <input type="hidden" name="action" value="increase">
-                                    <button type="submit" class="btn btn-success btn-circle quantity-button">+</button>
+                                    <button type="submit" class="btn btn-success btn-circle quantity-button" 
+                                        @if($details['quantity'] >= $product->stock) disabled @endif>
+                                        +
+                                    </button>
                                 </form>
                             </div>
 
@@ -50,10 +58,7 @@
                     return $item['price'] * $item['quantity'];
                 }, session('cart'))), 2) }}</p>
 
-              
                 <a href="{{ route('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
-
-
             </div>
         @else
             <p class="text-center">Your cart is empty.</p>

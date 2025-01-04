@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -51,10 +51,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-    
+    Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
+        Route::get('orders', [OrderController::class, 'index'])->name('orders.index'); // Defined once
+        Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    });
+
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('admin/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
 
     Route::get('payment/success/{order_id}', [OrderController::class, 'paymentSuccess'])->name('payment.success');
     Route::get('payment/cancel', [OrderController::class, 'paymentCancel'])->name('payment.cancel');
+    Route::get('orders/{orderId}', [OrderController::class, 'show'])->name('admin.orders.show');
 
     Route::get('/checkout', [StripeController::class, 'createCheckoutSession'])->name('checkout');
     Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');

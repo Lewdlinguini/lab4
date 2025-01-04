@@ -151,6 +151,7 @@ class ProductController extends Controller
                 'quantity' => 1,
                 'price' => $priceToCharge,
                 'image' => $product->image ?? 'default_image.jpg',
+                'product_id' => $product->id,
             ];
         }
 

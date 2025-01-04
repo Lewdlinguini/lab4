@@ -26,6 +26,10 @@
             <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm d-flex align-items-center">
                 <i class="bi bi-person-plus fs-4 me-2"></i> Create New User
             </a>
+            <!-- New Button to go to Orders -->
+            <a href="{{ route('orders.index') }}" class="btn btn-secondary btn-sm d-flex align-items-center ms-2">
+                <i class="bi bi-box-arrow-in-right fs-4 me-2"></i> View Orders
+            </a>
         </div>
 
         <div class="table-responsive">
