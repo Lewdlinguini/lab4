@@ -3,6 +3,8 @@
 // app/Http/Controllers/StripeController.php
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Illuminate\Http\Request;
@@ -46,11 +48,28 @@ class StripeController extends Controller
 
     public function success()
     {
-        return view('checkout.success');
+        $cart = session()->get('cart', []);
+    
+        if (!empty($cart)) {
+            DB::transaction(function () use ($cart) {
+                foreach ($cart as $itemId => $item) {
+                    $product = Product::find($itemId);
+                    if ($product) {
+                        $product->stock -= $item['quantity'];
+                        $product->save();
+                    }
+                }
+    
+                session()->forget('cart');
+            });
+        }
+    
+        return view('checkout.success')->with('success', 'Your order was successful, and stock levels have been updated.');
     }
-
+    
     public function cancel()
     {
         return view('checkout.cancel');
     }
+
 }
