@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\CartController;
@@ -59,12 +60,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('admin/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
+    Route::patch('/admin/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
 
     Route::get('payment/success/{order_id}', [OrderController::class, 'paymentSuccess'])->name('payment.success');
     Route::get('payment/cancel', [OrderController::class, 'paymentCancel'])->name('payment.cancel');
     Route::get('orders/{orderId}', [OrderController::class, 'show'])->name('admin.orders.show');
 
-    Route::get('/checkout', [StripeController::class, 'createCheckoutSession'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'storeCheckoutData'])->name('checkout.store');
+
+    Route::get('/checkout/stripe', [StripeController::class, 'createCheckoutSession'])->name('checkout.stripe');
     Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/cancel', [StripeController::class, 'cancel'])->name('checkout.cancel');
 

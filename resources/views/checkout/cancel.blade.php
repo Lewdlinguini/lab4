@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Checkout Canceled</h1>
-        <p>We're sorry, but your payment was not successful. You can try again or contact support for assistance.</p>
-        <a href="{{ route('products.index') }}" class="btn btn-primary">Back to Products</a>
-    </div>
+<div class="text-center">
+    <h2>Your payment was canceled.</h2>
+    <p>Please try again or contact support.</p>
+</div>
 @endsection

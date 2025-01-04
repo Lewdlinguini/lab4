@@ -19,18 +19,21 @@ class OrderController extends Controller
     // Admin: Update order status
     public function updateStatus(Request $request, Order $order)
     {
+        // Validate the input
         $request->validate([
             'shipping_status' => 'required|string|in:Pending,Shipped,Delivered',
             'payment_status' => 'required|string|in:Pending,Completed',
         ]);
-
+    
+        // Update the shipping and payment statuses
         $order->update([
             'shipping_status' => $request->shipping_status,
             'payment_status' => $request->payment_status,
         ]);
-
+    
+        // Redirect back with a success message
         return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
-    }
+    }    
 
     // Show specific order details
     public function show($id)
