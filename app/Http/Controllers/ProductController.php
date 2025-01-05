@@ -42,7 +42,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'discount' => 'nullable|integer|min:0|max:50'
+            'discount' => 'nullable|integer|min:0|max:99'
         ]);
 
         $price = $request->price;
@@ -87,7 +87,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'discount' => 'nullable|integer|min:0|max:50'
+            'discount' => 'nullable|integer|min:0|max:99'
         ]);
 
        

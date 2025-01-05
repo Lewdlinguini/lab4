@@ -50,7 +50,13 @@
                 <option value="10" {{ old('discount') == 10 ? 'selected' : '' }}>10%</option>
                 <option value="20" {{ old('discount') == 20 ? 'selected' : '' }}>20%</option>
                 <option value="30" {{ old('discount') == 30 ? 'selected' : '' }}>30%</option>
+                <option value="40" {{ old('discount') == 40 ? 'selected' : '' }}>40%</option>
                 <option value="50" {{ old('discount') == 50 ? 'selected' : '' }}>50%</option>
+                <option value="60" {{ old('discount') == 60 ? 'selected' : '' }}>60%</option>
+                <option value="70" {{ old('discount') == 70 ? 'selected' : '' }}>70%</option>
+                <option value="80" {{ old('discount') == 80 ? 'selected' : '' }}>80%</option>
+                <option value="90" {{ old('discount') == 90 ? 'selected' : '' }}>90%</option>
+                <option value="99" {{ old('discount') == 99 ? 'selected' : '' }}>99%</option>
             </select>
         </div>
 

@@ -48,11 +48,18 @@
         <div class="col-12 col-md-6">
             <label for="discount" class="form-label">Discount Percentage</label>
             <select id="discount" name="discount" class="form-select form-select-sm">
-                <option value="0" {{ old('discount', $product->discount) == 0 ? 'selected' : '' }}>No Discount</option>
-                <option value="10" {{ old('discount', $product->discount) == 10 ? 'selected' : '' }}>10%</option>
-                <option value="20" {{ old('discount', $product->discount) == 20 ? 'selected' : '' }}>20%</option>
-                <option value="30" {{ old('discount', $product->discount) == 30 ? 'selected' : '' }}>30%</option>
-                <option value="50" {{ old('discount', $product->discount) == 50 ? 'selected' : '' }}>50%</option>
+            <option value="0" {{ old('discount', $product->discount) == 0 ? 'selected' : '' }}>No Discount</option>
+            <option value="10" {{ old('discount', $product->discount) == 10 ? 'selected' : '' }}>10%</option>
+            <option value="20" {{ old('discount', $product->discount) == 20 ? 'selected' : '' }}>20%</option>
+            <option value="30" {{ old('discount', $product->discount) == 30 ? 'selected' : '' }}>30%</option>
+            <option value="40" {{ old('discount', $product->discount) == 40 ? 'selected' : '' }}>40%</option>
+            <option value="50" {{ old('discount', $product->discount) == 50 ? 'selected' : '' }}>50%</option>
+            <option value="60" {{ old('discount', $product->discount) == 60 ? 'selected' : '' }}>60%</option>
+            <option value="70" {{ old('discount', $product->discount) == 70 ? 'selected' : '' }}>70%</option>
+            <option value="80" {{ old('discount', $product->discount) == 80 ? 'selected' : '' }}>80%</option>
+            <option value="90" {{ old('discount', $product->discount) == 90 ? 'selected' : '' }}>90%</option>
+            <option value="99" {{ old('discount', $product->discount) == 99 ? 'selected' : '' }}>99%</option>
+
             </select>
         </div>
 
