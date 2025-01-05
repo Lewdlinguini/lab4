@@ -19,10 +19,9 @@
             </div>
 
             <div class="mb-4">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email', $user->email) }}" placeholder="Enter your email address">
-                @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
-            </div>
+                 <label for="email" class="form-label">Email Address</label>
+                 <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email', $user->email) }}" readonly>
+           </div>
 
             <div class="mb-4">
                 <label for="password" class="form-label">New Password</label>

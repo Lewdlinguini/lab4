@@ -12,12 +12,8 @@
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" id="email" value="{{ $user->email }}" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password (leave blank to keep current)</label>
-                <input type="password" class="form-control" name="password" id="password">
-            </div>
+                <input type="email" class="form-control" name="email" id="email" value="{{ $user->email }}" readonly>
+           </div>
             <div class="form-group">
                 <label for="role_id">Role</label>
                 <select name="role_id" class="form-control" required>
