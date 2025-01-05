@@ -26,7 +26,7 @@ class StripeController extends Controller
                     'product_data' => [
                         'name' => $item['product_name'],
                     ],
-                    'unit_amount' => $item['price'] * 100, // Price in cents
+                    'unit_amount' => $item['price'] * 100, 
                 ],
                 'quantity' => $item['quantity'],
             ];

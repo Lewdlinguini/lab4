@@ -137,15 +137,14 @@ class ProductController extends Controller
     if ($product->stock > 0) {
         $priceToCharge = $product->discounted_price > 0 ? $product->discounted_price : $product->price;
 
-        // Retrieve cart from session or initialize as empty array
         $cart = session()->get('cart', []);
 
-        // Add or update product in the cart
+        
         if (isset($cart[$product->id])) {
-            // If the product is already in the cart, increase the quantity
+            
             $cart[$product->id]['quantity']++;
         } else {
-            // Otherwise, add the product to the cart with quantity 1
+           
             $cart[$product->id] = [
                 'product_name' => $product->product_name,
                 'quantity' => 1,
@@ -155,10 +154,9 @@ class ProductController extends Controller
             ];
         }
 
-        // Save the updated cart to the session
+       
         session()->put('cart', $cart);
 
-        // Redirect to cart view
         return redirect()->route('cart.index')->with('success', 'Product added to cart.');
     }
 

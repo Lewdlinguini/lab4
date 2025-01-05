@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/CheckoutController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,12 +9,12 @@ class CheckoutController extends Controller
 {
     public function showCheckoutForm()
     {
-        return view('checkout.checkout'); // Adjust if needed based on your view structure
+        return view('checkout.checkout'); 
     }
 
     public function storeCheckoutData(Request $request)
     {
-        // Validate the input data
+        
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -24,9 +22,9 @@ class CheckoutController extends Controller
             'payment_method' => 'required|string',
         ]);
     
-        // Check if the customer already exists based on the email
+       
         $customer = \App\Models\CustomerDetail::updateOrCreate(
-            ['email' => $validatedData['email']], // Find existing customer by email
+            ['email' => $validatedData['email']], 
             [
                 'name' => $validatedData['name'],
                 'address' => $validatedData['address'],
@@ -34,13 +32,13 @@ class CheckoutController extends Controller
             ]
         );
     
-        // Redirect to Stripe payment gateway or success page based on payment method
+       
         if ($validatedData['payment_method'] === 'stripe') {
-            // Redirect to Stripe payment (you can replace this with the appropriate Stripe redirect)
+            
             return redirect()->route('checkout.stripe');
         }
     
-        // If the payment method is not Stripe, go to the success page
+       
         return redirect()->route('checkout.success');
     }    
 

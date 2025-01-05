@@ -8,10 +8,10 @@ class CartController extends Controller
 {
     public function index()
     {
-        // Get the cart items from the session
+      
         $cart = session()->get('cart', []);
 
-        // Calculate the total only if the cart is not empty
+      
         $total = null;
         if (!empty($cart)) {
             $total = array_sum(array_map(function ($item) {
@@ -19,7 +19,7 @@ class CartController extends Controller
             }, $cart));
         }
 
-        // Return the cart view with cart items and total
+       
         return view('cart', compact('cart', 'total'));
     }
 
@@ -28,7 +28,7 @@ class CartController extends Controller
         $product = Product::findOrFail($product_id);
         $cart = session()->get('cart', []);
 
-        // Check if the product exists in the cart
+       
         if (isset($cart[$product_id])) {
             $cart[$product_id]['quantity'] += $quantity;
         } else {
@@ -48,10 +48,10 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        // Check if the product exists in the cart
+      
         if (isset($cart[$id])) {
             if ($request->has('action')) {
-                // Increment or decrement based on the action
+               
                 if ($request->action === 'increase') {
                     $cart[$id]['quantity']++;
                 } elseif ($request->action === 'decrease') {
@@ -60,7 +60,7 @@ class CartController extends Controller
                     }
                 }
             } else {
-                // Default behavior: Update to the exact quantity
+              
                 $cart[$id]['quantity'] = $request->quantity ?? $cart[$id]['quantity'];
             }
 
@@ -74,7 +74,7 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        // Remove the item from the cart if it exists
+        
         if (isset($cart[$id])) {
             unset($cart[$id]);
             session()->put('cart', $cart);

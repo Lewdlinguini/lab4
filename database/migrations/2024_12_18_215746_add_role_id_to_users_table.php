@@ -14,9 +14,9 @@ class AddRoleIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            // Check if 'role_id' doesn't exist and add it
+           
             if (!Schema::hasColumn('users', 'role_id')) {
-                $table->foreignId('role_id')->constrained('roles')->nullable()->after('email'); // Add foreign key
+                $table->foreignId('role_id')->constrained('roles')->nullable()->after('email'); 
             }
         });
     }
@@ -29,8 +29,8 @@ class AddRoleIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']); // Drop foreign key constraint
-            $table->dropColumn('role_id'); // Drop the column
+            $table->dropForeign(['role_id']); 
+            $table->dropColumn('role_id'); 
         });
     }
 }

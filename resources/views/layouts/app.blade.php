@@ -128,7 +128,7 @@
                             <img src="{{ auth()->user()->profile_picture_url }}" alt="Profile Image" class="rounded-circle" width="40" height="40">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}" id="editProfileLink">Edit Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('orders.index') }}">My Orders</a></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                         </ul>

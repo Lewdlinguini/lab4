@@ -6,10 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    // database/migrations/xxxx_xx_xx_xxxxxx_create_order_items_table.php
+   
     public function up()
 {
     Schema::create('order_items', function (Blueprint $table) {
@@ -22,10 +19,7 @@ return new class extends Migration
         $table->timestamps();
     });
 }   
-    
-    /**
-     * Reverse the migrations.
-     */
+   
     public function down(): void
     {
         Schema::dropIfExists('order_items');
