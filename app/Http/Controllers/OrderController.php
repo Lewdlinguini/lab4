@@ -39,6 +39,8 @@ class OrderController extends Controller
             'shipping_status' => $request->shipping_status,
             'payment_status' => $request->payment_status,
         ]);
+
+        $order->user->notify(new OrderStatusUpdated($order));
     
         // Redirect back with a success message
         return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');

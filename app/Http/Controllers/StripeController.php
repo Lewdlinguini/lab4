@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmation;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -78,6 +80,8 @@ class StripeController extends Controller
                 }
 
                 $order->update(['total_amount' => $totalAmount]);
+
+                Mail::to($user->email)->send(new OrderConfirmation($order));
 
                 session()->forget('cart');
             });
